@@ -15,16 +15,16 @@ const getRangeOfEntireDocument = (document: vscode.TextDocument): vscode.Range =
 	return new vscode.Range(firstLine.range.start, lastLine.range.end)
 }
 
-const extractClassNames = (htmlText: string):string[] => {
+const extractClassNames = (htmlText: string):Set<string> => {
 	const regexExpression = /class="(.*?)"/gm
-	const classNames = [...htmlText.matchAll(regexExpression)].map(([,match,]) =>match );
+	const classNames = new Set([...htmlText.matchAll(regexExpression)].map(([,match,]) => match ));
 	return classNames;
 }
 
 const getAllClassNames = (document: vscode.TextDocument): string[] => {
 	const textRange = getRangeOfEntireDocument(document);
 	const htmlText = document.getText(textRange)
-	return extractClassNames(htmlText)
+	return [...extractClassNames(htmlText)]
 }
 
 // this method is called when your extension is activated
@@ -54,7 +54,6 @@ export function activate(context: vscode.ExtensionContext) {
 		const document = editor?.document;
 		const selection = editor?.selection;
 
-		//should this be a switch case instead?
 		const cssClasses = selection?.isEmpty && document ? getAllClassNames(document) : [document?.getText(selection)]
 		const globPatternForCssFile = folder && new vscode.RelativePattern(folder, '*.css');
 		const allCssFilesInFolder = globPatternForCssFile ? await workspace.findFiles(globPatternForCssFile) : [];
