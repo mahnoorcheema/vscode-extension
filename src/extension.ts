@@ -17,7 +17,7 @@ const getRangeOfEntireDocument = (document: vscode.TextDocument): vscode.Range =
 
 const extractClassNames = (htmlText: string):Set<string> => {
 	const regexExpression = /class="(.*?)"/gm
-	const classNames = new Set([...htmlText.matchAll(regexExpression)].map(([,match,]) => match ));
+	const classNames = new Set([...htmlText.matchAll(regexExpression)].map(([,match]) => match ));
 	return classNames;
 }
 
