@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const lastLineOfCssFile = cssFile.lineAt(cssFile.lineCount - 1);
 
 		
-		const formattedClassNamesForCssfile = cssClasses.map(classname => `.${classname} {}`).join('\n')
+		const formattedClassNamesForCssfile = cssClasses.map(classname => `.${classname} {}`).join('\n').concat('\n')
 		const edits = [new vscode.TextEdit(lastLineOfCssFile.range, formattedClassNamesForCssfile)]
 		const workEdits = new vscode.WorkspaceEdit();
 		workEdits.set(cssFile.uri, edits)
